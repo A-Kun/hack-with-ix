@@ -4,6 +4,7 @@
 angular.module('myApp', [
     'charts.controllers.chartsController',
     'common.services.apiRouting',
+    'ngDragDrop',
     'ngRoute'
     ])
     .config(['$provide', '$routeProvider', '$locationProvider', '$sceDelegateProvider',
