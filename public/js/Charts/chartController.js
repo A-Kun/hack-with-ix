@@ -9,7 +9,7 @@ angular.module('charts.controllers.chartsController', [])
             console.log(a);
         }
 
-        var NAtimestampMapping = ApiRoutingService.get('impressions?dc=NA').then(function(res) {
+        var NAtimestampMapping = ApiRoutingService.get('impressions?dc=' + dc).then(function(res) {
             var ret = {},
                 curr,
                 timestamp;
@@ -30,33 +30,65 @@ angular.module('charts.controllers.chartsController', [])
         $scope.refresh = function(xaxis, yaxis) {
             var xAxis = [];
             var yAxis = [];
-            NAtimestampMapping.then(function(res) {
-                console.log(res);
-                Highcharts.chart('container', {
-                    chart: {
-                        renderTo: 'container',
-                        type: 'line'
-                    },
-                    xAxis: {
-                        categories: Object.keys(res).map(function(key) {
-                            console.log(key);
-                            return new Date(parseInt(key));
-                        })
-                    },
+            if (xaxis == "timestamp") {
+                NAtimestampMapping.then(function(res) {
+                    console.log(res);
+                    Highcharts.chart('container', {
+                        chart: {
+                            renderTo: 'container',
+                            type: 'line'
+                        },
+                        xAxis: {
+                            categories: Object.keys(res).map(function(key) {
+                                console.log(key);
+                                return new Date(parseInt(key));
+                            })
+                        },
 
-                    series: [{
-                        data: Object.keys(res).map(function(key) {
-                            
-                            return res[key][yaxis].reduce(function(a,b) {
-                                return Math.round(a + b);
-                            }, 0);
-                        })
-                    }]
+                        series: [{
+                            data: Object.keys(res).map(function(key) {
+                                
+                                return res[key][yaxis].reduce(function(a,b) {
+                                    return Math.round(a + b);
+                                }, 0);
+                            })
+                        }]
+                    });
                 });
-            });
+            } else {
 
+
+
+                ApiRoutingService.get('impressions?dc=' + dc).then(function(res) {
+                    console.log(res);
+
+
+                    var i;
+                    for (i = 0; i < res.length; i++) {
+                        xAxis.push(res[i][xaxis]);
+                        yAxis.push(res[i][yaxis]);
+                    }
+
+
+
+
+                    Highcharts.chart('container', {
+                        chart: {
+                            renderTo: 'container',
+                            type: 'line'
+                        },
+                        xAxis: {
+                            categories: xAxis
+                        },
+
+                        series: [{
+                            data: yAxis
+                        }]
+                    });
+                });
+            }
         }
-        $scope.refresh("timestamp", "spend");
+        $scope.refresh("", "");
 
 
     }]);
