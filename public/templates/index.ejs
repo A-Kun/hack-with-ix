@@ -10,12 +10,62 @@
 
         <!-- style -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <style>
+            .lvl-over {
+                /* applied to a drop target when a draggable object is over it */
+                border: 2px dashed black !important;
+            }
 
+            .lvl-target {
+                /* 
+                applied to all drop targets when a drag operation begins 
+                removed when the drag operation ends
+                used to indicate drop targets on a page 
+                */
+                background-color: #ddd;
+                opacity: .5;
+            }
+
+            [draggable] {
+                /* not applied by the directive, but useful to indicate a draggable element */
+                -moz-user-select: none;
+                -khtml-user-select: none;
+                -webkit-user-select: none;
+                user-select: none;
+                cursor: move;
+                border:1px solid black;
+            }
+        </style>
     </head>
 
     <body ng-controller="ChartsController">
-        HI
-        <div id="container">Placeholder for chart</div>
+        <center><h1> WELCOME TO CANADA! </h1></center>
+        <div class="row">
+            <div class="col-md-2">
+                <span>Select a filter:&nbsp;</span>
+                <select name="Select a filter">
+                   <option value="platform">platform</option>
+                   <option value="format">format</option>
+                   <option value="impressions">impressions</option>
+                   <option value="spend">spend</option>
+                </select>
+            </div>
+            <div id="container" class="col-md-8" data-jqyoui-options></div>
+        </div>
+        <div class="row">
+            <center>
+                <div>
+                    <span>Select a filter:&nbsp;</span>
+                    <select name="Select a filter">
+                        <option value="timestamp">timestamp</option>
+                        <option value="platform">platform</option>
+                        <option value="format">format</option>
+                        <option value="impressions">impressions</option>
+                        <option value="spend">spend</option>
+                    </select>
+                </div>
+            </center>
+        </div>
     </body>
 
     <footer>
