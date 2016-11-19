@@ -9,7 +9,7 @@ angular.module('charts.controllers.chartsController', [])
             console.log(a);
         };
 
-        var NAtimestampMapping = ApiRoutingService.get('impressions?dc=NA').then(function(res) {
+        var NAtimestampMapping = ApiRoutingService.get('impressions?dc=' + dc).then(function(res) {
             var ret = {},
                 curr,
                 timestamp;
@@ -28,42 +28,88 @@ angular.module('charts.controllers.chartsController', [])
         });
 
         $scope.refresh = function(xaxis, yaxis) {
-
-            NAtimestampMapping.then(function(res) {
-                console.log('AAAAAAAAAAAA', res);
-                if (yaxis === 'format') {
-                    data = {
-                        data: Object.keys(res).map(function(key) {
-                            var count = res[key][yaxis].length / 2;
-                            return count;
-                        })
-                    };
-                } else { // assume yaxis is impression or spend
-                    data = {
-                        data: Object.keys(res).map(function(key) {
-                            
-                            return res[key][yaxis].reduce(function(a,b) {
-                                return Math.round(a + b);
-                            }, 0);
-                        })
-                    };
-                }
-                Highcharts.chart('container', {
-                    chart: {
-                        renderTo: 'container',
-                        type: 'line'
-                    },
-                    xAxis: {
-                        categories: Object.keys(res).map(function(key) {
-                            console.log(key);
-                            return new Date(parseInt(key));
-                        })
-                    },
-                    series: [data]
+            var xAxis = [];
+            var yAxis = [];
+            if (xaxis == 'timestamp') {
+                NAtimestampMapping.then(function(res) {
+                    console.log(res);
+                    Highcharts.chart('container', {
+                        chart: {
+                            renderTo: 'container',
+                            type: 'line'
+                        },
+                        xAxis: {
+                            categories: Object.keys(res).map(function(key) {
+                                console.log(key);
+                                return new Date(parseInt(key));
+                            })
+                        },
+                        series: [{
+                            data: Object.keys(res).map(function(key) {
+                                
+                                return res[key][yaxis].reduce(function(a,b) {
+                                    return Math.round(a + b);
+                                }, 0);
+                            })
+                        }]
+                    });
                 });
-            });
-        };
-        $scope.refresh("timestamp", "spend");
+            } else if (xaxis == 'platform' || xaxis == 'format') {
+                ApiRoutingService.get('impressions?dc=' + dc).then(function(res) {
+                    console.log(res);
+                    var i;
+                    var count = {};
+                    for (i = 0; i < res.length; i++) {
+                        if (count[res[i][xaxis]]) {
+                            count[res[i][xaxis]]++;
+                        } else {
+                            count[res[i][xaxis]] = 1;
+                        }
+                    }
+                    for (var key in count) {
+                        xAxis.push(key);
+                        yAxis.push(count[key]);
+                        console.log(count);
+                    }
+                    Highcharts.chart('container', {
+                        chart: {
+                            renderTo: 'container',
+                            type: 'column'
+                        },
+                        xAxis: {
+                            categories: xAxis
+                        },
+
+                        series: [{
+                            data: yAxis
+                        }]
+                    });
+                });
+            } else {
+                ApiRoutingService.get('impressions?dc=' + dc).then(function(res) {
+                    console.log(res);
+                    var i;
+                    for (i = 0; i < res.length; i++) {
+                        xAxis.push(res[i][xaxis]);
+                        yAxis.push(res[i][yaxis]);
+                    }
+                    Highcharts.chart('container', {
+                        chart: {
+                            renderTo: 'container',
+                            type: 'line'
+                        },
+                        xAxis: {
+                            categories: xAxis
+                        },
+
+                        series: [{
+                            data: yAxis
+                        }]
+                    });
+                });
+            }
+        }
+        $scope.refresh("", "");
 
         $scope.list1 = [];
         $scope.list2 = [];
