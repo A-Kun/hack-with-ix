@@ -2,21 +2,61 @@
 
 angular.module('charts.controllers.chartsController', [])
     .controller('ChartsController', ['$scope', 'ApiRoutingService', function($scope, ApiRoutingService) {
-        Highcharts.chart('container', {
+        var dc = 'NA';
+        var data;
+
+        $scope.log = function(a) {
+            console.log(a);
+        }
+
+        var NAtimestampMapping = ApiRoutingService.get('impressions?dc=NA').then(function(res) {
+            var ret = {},
+                curr,
+                timestamp;
+            res.map(function(ele) {
+                timestamp = ele.timestamp - ele.timestamp % 86400000
+                ret[timestamp] = ret[timestamp] || {}
+                curr = {
+                    platform: (ret[timestamp].platform || []).concat(ele.platform),
+                    format: (ret[timestamp].format || []).concat(ele.format),
+                    impressions: (ret[timestamp].impressions || []).concat(ele.impressions),
+                    spend: (ret[timestamp].spend || []).concat(ele.spend)
+                };
+                ret[timestamp] = curr
+            });
+            return ret;
+        });
+
+        $scope.refresh = function(xaxis, yaxis) {
+            var xAxis = [];
+            var yAxis = [];
+            NAtimestampMapping.then(function(res) {
+                console.log(res);
+                Highcharts.chart('container', {
                     chart: {
-            renderTo: 'container',
-            type: 'column'
-        },
-            xAxis: {
-                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-            },
+                        renderTo: 'container',
+                        type: 'line'
+                    },
+                    xAxis: {
+                        categories: Object.keys(res).map(function(key) {
+                            console.log(key);
+                            return new Date(parseInt(key));
+                        })
+                    },
 
-            series: [{
-                data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-            }]
-        });
+                    series: [{
+                        data: Object.keys(res).map(function(key) {
+                            
+                            return res[key][yaxis].reduce(function(a,b) {
+                                return Math.round(a + b);
+                            }, 0);
+                        })
+                    }]
+                });
+            });
 
-        ApiRoutingService.get('servers').then(function(res) {
-            console.log(res);
-        });
+        }
+        $scope.refresh("timestamp", "spend");
+
+
     }]);
