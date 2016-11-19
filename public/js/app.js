@@ -2,7 +2,8 @@
 'use strict';
 
 angular.module('myApp', [
-    'charts.chartsController',
+    'charts.controllers.chartsController',
+    'common.services.apiRouting',
     'ngRoute'
     ])
     .config(['$provide', '$routeProvider', '$locationProvider', '$sceDelegateProvider',
