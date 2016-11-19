@@ -1,0 +1,9 @@
+{
+    "node": true,
+    "globals": {
+        "angular": false,
+        "API_DOMAIN": false,
+        "$": false,
+        "apiDomain": false
+    }
+}
