@@ -30,7 +30,7 @@ angular.module('charts.controllers.chartsController', [])
         $scope.refresh = function(xaxis, yaxis) {
             var xAxis = [];
             var yAxis = [];
-            if (xaxis == "timestamp") {
+            if (xaxis == 'timestamp') {
                 NAtimestampMapping.then(function(res) {
                     console.log(res);
                     Highcharts.chart('container', {
@@ -44,7 +44,6 @@ angular.module('charts.controllers.chartsController', [])
                                 return new Date(parseInt(key));
                             })
                         },
-
                         series: [{
                             data: Object.keys(res).map(function(key) {
                                 
@@ -55,23 +54,45 @@ angular.module('charts.controllers.chartsController', [])
                         }]
                     });
                 });
-            } else {
-
-
-
+            } else if (xaxis == 'platform' || xaxis == 'format') {
                 ApiRoutingService.get('impressions?dc=' + dc).then(function(res) {
                     console.log(res);
+                    var i;
+                    var count = {};
+                    for (i = 0; i < res.length; i++) {
+                        if (count[res[i][xaxis]]) {
+                            count[res[i][xaxis]]++;
+                        } else {
+                            count[res[i][xaxis]] = 1;
+                        }
+                    }
+                    for (var key in count) {
+                        xAxis.push(key);
+                        yAxis.push(count[key]);
+                        console.log(count);
+                    }
+                    Highcharts.chart('container', {
+                        chart: {
+                            renderTo: 'container',
+                            type: 'column'
+                        },
+                        xAxis: {
+                            categories: xAxis
+                        },
 
-
+                        series: [{
+                            data: yAxis
+                        }]
+                    });
+                });
+            } else {
+                ApiRoutingService.get('impressions?dc=' + dc).then(function(res) {
+                    console.log(res);
                     var i;
                     for (i = 0; i < res.length; i++) {
                         xAxis.push(res[i][xaxis]);
                         yAxis.push(res[i][yaxis]);
                     }
-
-
-
-
                     Highcharts.chart('container', {
                         chart: {
                             renderTo: 'container',
