@@ -70,6 +70,11 @@ angular.module('charts.controllers.chartsController', [])
                                 })
                             }]
                         });
+                        showStats(Object.keys(res).map(function(key) {
+                                    
+                                    return res[key]['spendPerImpression'].reduce(function(a,b) {
+                                        return Math.round(a + b);
+                                    }, 0)}));
                     });
                 } else {
                     NAtimestampMapping.then(function(res) {
@@ -190,6 +195,43 @@ angular.module('charts.controllers.chartsController', [])
                 }
             }
             return true;
+        }
+
+        // 5-number summary, standard deviation and outliers
+        function showStats(dataArray) {
+            var values = dataArray.slice();
+            values.sort(function(a, b) { return a - b;} );
+            var min = values[0];
+            var q1 = values[Math.floor(values.length / 4)];
+            var median = values[Math.floor(values.length / 2)];
+            var q3 = values[Math.floor(3 * values.length / 4)];
+            var max = values[values.length - 1];
+            
+            // midspread or middle 50%
+            var interquartile = q3 - q1;
+            // caculate boudaries
+            var lower_boundary = q1 - (1.5 * interquartile);
+            var upper_boundary = q3 - (1.5 * interquartile);
+
+            var mean = values.reduce(function(a, b) {return a + b;}) / values.length;
+
+            var difference_sum = 0;
+            for (var i = 0; i < values.length; i++) {
+                difference_sum += Math.pow(values[i] - mean, 2);
+            }
+            var standard_deviation = Math.sqrt(difference_sum / values.length);
+            var result = {
+                min: min,
+                q1: q1,
+                median: median,
+                q3: q3,
+                max: max,
+                interquartile: interquartile,
+                lower_boundary: lower_boundary,
+                upper_boundary: upper_boundary,
+                standard_deviation: standard_deviation
+            };
+            return reulst;
         }
 
         // Limit items to be dropped in list1
