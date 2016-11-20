@@ -5,10 +5,6 @@ angular.module('charts.controllers.chartsController', [])
         var dc = 'NA';
         var data;
 
-        $scope.log = function(a) {
-            console.log(a);
-        };
-
         var NAtimestampMapping = ApiRoutingService.get('impressions?dc=' + dc).then(function(res) {
             var ret = {},
                 curr,
@@ -31,32 +27,74 @@ angular.module('charts.controllers.chartsController', [])
             var xAxis = [];
             var yAxis = [];
             if (xaxis == 'timestamp') {
-                NAtimestampMapping.then(function(res) {
-                    console.log(res);
-                    Highcharts.chart('container', {
-                        chart: {
-                            renderTo: 'container',
-                            type: 'line'
-                        },
-                        xAxis: {
-                            categories: Object.keys(res).map(function(key) {
-                                console.log(key);
-                                return new Date(parseInt(key));
-                            })
-                        },
-                        series: [{
-                            data: Object.keys(res).map(function(key) {
-                                
-                                return res[key][yaxis].reduce(function(a,b) {
-                                    return Math.round(a + b);
-                                }, 0);
-                            })
-                        }]
+                if (yaxis == 'spendPerImpression') {
+                    NAtimestampMapping.then(function(res) {
+                        var max = 0;
+                        for (var key in res) {
+                            if (key > max) {
+                                max = key;
+                            } 
+                        }
+                        delete res[max];
+                        for (var key in res) {
+                            res[key]['spendPerImpression'] = [];
+                            var i;
+                            for (i = 0; i < res[key]['spend'].length; i++) {
+                                res[key]['spendPerImpression'].push(res[key]['spend'][i] / res[key]['impressions'][i])
+                            }
+                        }
+                        Highcharts.chart('container', {
+                            chart: {
+                                renderTo: 'container',
+                                type: 'line'
+                            },
+                            xAxis: {
+                                categories: Object.keys(res).map(function(key) {
+                                    return new Date(parseInt(key));
+                                })
+                            },
+                            series: [{
+                                data: Object.keys(res).map(function(key) {
+                                    
+                                    return res[key]['spendPerImpression'].reduce(function(a,b) {
+                                        return Math.round(a + b);
+                                    }, 0);
+                                })
+                            }]
+                        });
                     });
-                });
-            } else if (xaxis == 'platform' || xaxis == 'format') {
+                } else {
+                    NAtimestampMapping.then(function(res) {
+                        var max = 0;
+                        for (var key in res) {
+                            if (key > max) {
+                                max = key;
+                            } 
+                        }
+                        delete res[max];
+                        Highcharts.chart('container', {
+                            chart: {
+                                renderTo: 'container',
+                                type: 'line'
+                            },
+                            xAxis: {
+                                categories: Object.keys(res).map(function(key) {
+                                    return new Date(parseInt(key));
+                                })
+                            },
+                            series: [{
+                                data: Object.keys(res).map(function(key) {
+                                    
+                                    return res[key][yaxis].reduce(function(a,b) {
+                                        return Math.round(a + b);
+                                    }, 0);
+                                })
+                            }]
+                        });
+                    });
+                }
+            } else if ((xaxis == 'platform' || xaxis == 'format') && yaxis == 'count') {
                 ApiRoutingService.get('impressions?dc=' + dc).then(function(res) {
-                    console.log(res);
                     var i;
                     var count = {};
                     for (i = 0; i < res.length; i++) {
@@ -69,7 +107,6 @@ angular.module('charts.controllers.chartsController', [])
                     for (var key in count) {
                         xAxis.push(key);
                         yAxis.push(count[key]);
-                        console.log(count);
                     }
                     Highcharts.chart('container', {
                         chart: {
@@ -87,7 +124,6 @@ angular.module('charts.controllers.chartsController', [])
                 });
             } else {
                 ApiRoutingService.get('impressions?dc=' + dc).then(function(res) {
-                    console.log(res);
                     var i;
                     for (i = 0; i < res.length; i++) {
                         xAxis.push(res[i][xaxis]);
@@ -119,23 +155,23 @@ angular.module('charts.controllers.chartsController', [])
             { title: 'format', drag: true },
             { title: 'impressions', drag: true },
             { title: 'spend', drag: true },
-            { title: 'timestamp', drag: true},
-            { title: 'x', drag: true},
-            { title: '+', drag: true},
-            { title: '-', drag: true},
+            { title: 'count', drag: true},
+            // { title: 'x', drag: true},
+            // { title: '+', drag: true},
+            // { title: '-', drag: true},
             { title: '/', drag: true}
         ];
-        function is_valid_operator(listA) {
-            if (!listA.length) {
+        function isValidOperator(listA) {
+            if (!listA.length || (!(listA.length % 2))) {
                 return false;
             }
             if (listA.length === 1) {
                 return true;
             }
             for (var i = 0; i < listA.length; i++) {
-                if (!(listA.length % 2) && (listA[i] in ['x', '+', '-', '/'] )) {
+                if (!(i % 2) && (['x', '+', '-', '/'].indexOf(listA[i].title) != -1)) {
                     return false;
-                } else if (!(listA[i] in ['x', '+', '-', '/'] )) {
+                } else if ((i % 2) && (!(['x', '+', '-', '/'].indexOf(listA[i].title) != -1))) {
                     return false; 
                 }
             }
@@ -144,13 +180,17 @@ angular.module('charts.controllers.chartsController', [])
         // Limit items to be dropped in list1
         $scope.optionsList1 = {
             accept: function(dragEl) {
-                console.log(is_valid_operator($scope.list1));
-                console.log(is_valid_operator($scope.list2));
-                if (is_valid_operator($scope.list1) && is_valid_operator($scope.list2)) {
-                    console.log($scope.list1);
-                    $scope.refresh($scope.list2[0].title, $scope.list1[0].title);
-                }
                 return true;
             }
         };
+
+        $scope.refreshOnDrop = function() {
+            if (isValidOperator($scope.list1) && isValidOperator($scope.list2)) {
+                if ($scope.list1.length > 1 && $scope.list1[0].title == 'spend' && $scope.list1[1].title == '/' && $scope.list1[2].title == 'impressions') {
+                    $scope.refresh($scope.list2[0].title, 'spendPerImpression');
+                } else {
+                    $scope.refresh($scope.list2[0].title, $scope.list1[0].title);
+                }
+            }
+        }
     }]);

@@ -22,15 +22,10 @@
         <center><h1> WELCOME TO CANADA! </h1></center>
         <div class="row">
             <div class="col-md-2">
-                <span>Select a filter:&nbsp;</span>
-                <select ng-model="yaxis" ng-change="refresh(xaxis, yaxis)">
-                   <option value="impressions">impressions</option>
-                   <option value="spend">spend</option>
-                </select>
                 <span class="span3" style='margin-left:10px;'>
-                    <div class="thumbnail" data-drop="true" ng-model='list1' data-jqyoui-options="optionsList1" jqyoui-droppable="{multiple:true}">
+                    <div class="thumbnail" data-drop="true" ng-model='list1' data-jqyoui-options="optionsList1" jqyoui-droppable="{multiple:true, onDrop:'refreshOnDrop'}">
                       <div class="caption">
-                        <div class="btn btn-info btn-draggable" ng-repeat="item in list1" ng-show="item.title" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list1" jqyoui-draggable="{index: {{$index}},animate:true}">{{item.title}}</div>
+                        <div class="btn btn-info btn-draggable" ng-repeat="item in list1" ng-show="item.title" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list1" jqyoui-draggable="{index: {{$index}},animate:true}">{{ item.title }}</div>
                       </div>
                     </div>
                 </span>
@@ -46,28 +41,14 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <center>
-                <div>
-                    <span>Select a filter:&nbsp;</span>
-                    <select ng-model="xaxis" ng-change="refresh(xaxis, yaxis)">
-                        <option value="timestamp">timestamp</option>
-                        <option value="platform">platform</option>
-                        <option value="format">format</option>
-                        <option value="impressions">impressions</option>
-                        <option value="spend">spend</option>
-                    </select>
-                </div>
-            </center>
-        </div>
-        <div class="col-md-2"></div>
-        <div class="contentWrapper ng-cloak col-md-8">
+        <div class="col-md-5"></div>
+        <div class="contentWrapper ng-cloak col-md-2">
             <div class='content'>
                 <div class="row-fluid">
                     <span class="span3" style='margin-left:10px;'>
-                        <div class="thumbnail" data-drop="true" ng-model='list2' data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=list2])'}"  jqyoui-droppable="{multiple:true}">
+                        <div class="thumbnail" data-drop="true" ng-model='list2' data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=list2])'}"  jqyoui-droppable="{multiple:true, onDrop:'refreshOnDrop'}">
                             <div class="caption">
-                                <div class="btn btn-info btn-draggable" ng-repeat="item in list2" ng-show="item.title" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list2" jqyoui-draggable="{index: {{$index}},animate:true}">{{item.title}}</div>
+                                <div class="btn btn-info btn-draggable" ng-repeat="item in list2" ng-show="item.title" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list2" jqyoui-draggable="{index: {{$index}},animate:true}">{{ item.title }}</div>
                             </div>
                         </div>
                     </span>
@@ -82,7 +63,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-route.js"></script>
-        <script src="http://localhost:8000/static/app.js"></script>
+        <script src="/static/app.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
