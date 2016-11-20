@@ -40,7 +40,7 @@ angular.module('charts.controllers.chartsController', [])
                                 max = key;
                             } 
                         }
-                        delete res[max];
+                        delete res[max]; // Remove the last timestamp, whose data is incomplete
                         for (var key in res) {
                             res[key]['spendPerImpression'] = [];
                             var i;
@@ -123,11 +123,9 @@ angular.module('charts.controllers.chartsController', [])
                         chart: {
                             renderTo: 'container',
                             type: 'column',
-                            backgroundColor: "#000000"//black
                         },
                         xAxis: {
                             categories: xAxis,
-                            backgroundColor: "#FFFFFF" //WHITE
                         },
 
                         series: [{
@@ -149,14 +147,11 @@ angular.module('charts.controllers.chartsController', [])
                         chart: {
                             renderTo: 'container',
                             type: 'line',
-                            backgroundColor: "#000000" //black
                         },
                         xAxis: {
                             categories: xAxis,
-                            Color: "#FFFFFF" // white
 
                         },
-
                         series: [{
                             data: yAxis
                         }]
@@ -175,9 +170,6 @@ angular.module('charts.controllers.chartsController', [])
             { title: 'impressions', drag: true },
             { title: 'spend', drag: true },
             { title: 'count', drag: true},
-            // { title: 'x', drag: true},
-            // { title: '+', drag: true},
-            // { title: '-', drag: true},
             { title: '/', drag: true}
         ];
         function isValidOperator(listA) {
@@ -196,6 +188,7 @@ angular.module('charts.controllers.chartsController', [])
             }
             return true;
         }
+
         // Limit items to be dropped in list1
         $scope.optionsList1 = {
             accept: function(dragEl) {
