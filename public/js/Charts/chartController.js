@@ -109,58 +109,37 @@ angular.module('charts.controllers.chartsController', [])
                 });
             }
         }
-        $scope.refresh("", "");
+        $scope.refresh('', '');
 
         $scope.list1 = [];
         $scope.list2 = [];
-        $scope.list3 = [];
-        $scope.list4 = [];
-      
         $scope.list5 = [
-            { 'title': 'Item 1', 'drag': true },
-            { 'title': 'Item 2', 'drag': true },
-            { 'title': 'Item 3', 'drag': true },
-            { 'title': 'Item 4', 'drag': true },
-            { 'title': 'Item 5', 'drag': true },
-            { 'title': 'Item 6', 'drag': true },
-            { 'title': 'Item 7', 'drag': true },
-            { 'title': 'Item 8', 'drag': true }
+            { title: 'timestamp', drag: true },
+            { title: 'platform', drag: true },
+            { title: 'format', drag: true },
+            { title: 'impressions', drag: true },
+            { title: 'spend', drag: true },
+            { title: 'timestamp', drag: true},
+            { title: 'x', drag: true},
+            { title: '+', drag: true},
+            { title: '-', drag: true},
+            { title: '/', drag: true}
         ];
-
-        // Limit items to be dropped in list1
-        $scope.optionsList1 = {
-            accept: function(dragEl) {
-                if ($scope.list1.length >= 2) {
-                    return false;
-                } else {
+        function is_valid_operator(listA) {
+            if ((listA.length) && (listA.length % 2)) {
+                if (listA.filter(function(ele) { return ele in ['x', '+', '-', '/']; }) <= listA.length/2) {
                     return true;
                 }
             }
-        };
-        $scope.list1 = [];
-        $scope.list2 = [];
-        $scope.list3 = [];
-        $scope.list4 = [];
-      
-        $scope.list5 = [
-            { 'title': 'Item 1', 'drag': true },
-            { 'title': 'Item 2', 'drag': true },
-            { 'title': 'Item 3', 'drag': true },
-            { 'title': 'Item 4', 'drag': true },
-            { 'title': 'Item 5', 'drag': true },
-            { 'title': 'Item 6', 'drag': true },
-            { 'title': 'Item 7', 'drag': true },
-            { 'title': 'Item 8', 'drag': true }
-        ];
-
-      // Limit items to be dropped in list1
-          $scope.optionsList1 = {
+            return false;
+        }
+        // Limit items to be dropped in list1
+        $scope.optionsList1 = {
             accept: function(dragEl) {
-                    if ($scope.list1.length >= 2) {
-                        return false;
-                    } else {
-                        return true;
-                    }
+                if (is_valid_operator($scope.list1) && is_valid_operator($scope.list2)) {
+                    $scope.refresh('timestamp', 'impressions');
+                }
+                return true;
             }
-          };
+        };
     }]);
