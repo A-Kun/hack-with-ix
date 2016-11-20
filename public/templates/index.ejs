@@ -19,10 +19,16 @@
     </head>
 
     <body ng-controller="ChartsController">
-        <center><h1> WELCOME TO CANADA! </h1></center>
+        <center>
+            <select ng-model="dc" ng-change="refreshOnDrop()">
+                <option value="NA">NA</option>
+                <option value="EU">EU</option>
+                <option value="AS">AS</option>
+            </select>
+        </center>
         <div class="row">
             <div class="col-md-2">
-                <span class="span3" style='margin-left:10px;'>
+                <span class="span3" style="margin-left:10px;">
                     <div class="thumbnail" data-drop="true" ng-model='list1' data-jqyoui-options="optionsList1" jqyoui-droppable="{multiple:true, onDrop:'refreshOnDrop'}">
                       <div class="caption">
                         <div class="btn btn-info btn-draggable" ng-repeat="item in list1" ng-show="item.title" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list1" jqyoui-draggable="{index: {{$index}},animate:true}">{{ item.title }}</div>

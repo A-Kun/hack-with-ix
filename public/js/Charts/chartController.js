@@ -23,7 +23,12 @@ angular.module('charts.controllers.chartsController', [])
             return ret;
         });
 
-        $scope.refresh = function(xaxis, yaxis) {
+        $scope.changeServer = function(server) {
+            dc = server;
+            $scope.refreshOnDrop();
+        }
+
+        $scope.refresh = function(xaxis, yaxis, dc) {
             var xAxis = [];
             var yAxis = [];
             if (xaxis == 'timestamp') {
@@ -44,6 +49,9 @@ angular.module('charts.controllers.chartsController', [])
                             }
                         }
                         Highcharts.chart('container', {
+                            title:{
+                                text:''
+                            },
                             chart: {
                                 renderTo: 'container',
                                 type: 'line'
@@ -109,6 +117,9 @@ angular.module('charts.controllers.chartsController', [])
                         yAxis.push(count[key]);
                     }
                     Highcharts.chart('container', {
+                        title:{
+                            text:''
+                        },
                         chart: {
                             renderTo: 'container',
                             type: 'column'
@@ -130,6 +141,9 @@ angular.module('charts.controllers.chartsController', [])
                         yAxis.push(res[i][yaxis]);
                     }
                     Highcharts.chart('container', {
+                        title:{
+                            text:''
+                        },
                         chart: {
                             renderTo: 'container',
                             type: 'line'
@@ -145,7 +159,7 @@ angular.module('charts.controllers.chartsController', [])
                 });
             }
         }
-        $scope.refresh('', '');
+        $scope.refresh('', '', dc);
 
         $scope.list1 = [];
         $scope.list2 = [];
@@ -185,11 +199,12 @@ angular.module('charts.controllers.chartsController', [])
         };
 
         $scope.refreshOnDrop = function() {
+            console.log(1);
             if (isValidOperator($scope.list1) && isValidOperator($scope.list2)) {
                 if ($scope.list1.length > 1 && $scope.list1[0].title == 'spend' && $scope.list1[1].title == '/' && $scope.list1[2].title == 'impressions') {
-                    $scope.refresh($scope.list2[0].title, 'spendPerImpression');
+                    $scope.refresh($scope.list2[0].title, 'spendPerImpression', $scope.dc);
                 } else {
-                    $scope.refresh($scope.list2[0].title, $scope.list1[0].title);
+                    $scope.refresh($scope.list2[0].title, $scope.list1[0].title, $scope.dc);
                 }
             }
         }
