@@ -126,18 +126,29 @@ angular.module('charts.controllers.chartsController', [])
             { title: '/', drag: true}
         ];
         function is_valid_operator(listA) {
-            if ((listA.length) && (listA.length % 2)) {
-                if (listA.filter(function(ele) { return ele in ['x', '+', '-', '/']; }) <= listA.length/2) {
-                    return true;
+            if (!listA.length) {
+                return false;
+            }
+            if (listA.length === 1) {
+                return true;
+            }
+            for (var i = 0; i < listA.length; i++) {
+                if (!(listA.length % 2) && (listA[i] in ['x', '+', '-', '/'] )) {
+                    return false;
+                } else if (!(listA[i] in ['x', '+', '-', '/'] )) {
+                    return false; 
                 }
             }
-            return false;
+            return true;
         }
         // Limit items to be dropped in list1
         $scope.optionsList1 = {
             accept: function(dragEl) {
+                console.log(is_valid_operator($scope.list1));
+                console.log(is_valid_operator($scope.list2));
                 if (is_valid_operator($scope.list1) && is_valid_operator($scope.list2)) {
-                    $scope.refresh('timestamp', 'impressions');
+                    console.log($scope.list1);
+                    $scope.refresh($scope.list2[0].title, $scope.list1[0].title);
                 }
                 return true;
             }
