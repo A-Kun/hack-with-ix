@@ -122,10 +122,12 @@ angular.module('charts.controllers.chartsController', [])
                         },
                         chart: {
                             renderTo: 'container',
-                            type: 'column'
+                            type: 'column',
+                            backgroundColor: "#000000"//black
                         },
                         xAxis: {
-                            categories: xAxis
+                            categories: xAxis,
+                            backgroundColor: "#FFFFFF" //WHITE
                         },
 
                         series: [{
@@ -146,10 +148,13 @@ angular.module('charts.controllers.chartsController', [])
                         },
                         chart: {
                             renderTo: 'container',
-                            type: 'line'
+                            type: 'line',
+                            backgroundColor: "#000000" //black
                         },
                         xAxis: {
-                            categories: xAxis
+                            categories: xAxis,
+                            Color: "#FFFFFF" // white
+
                         },
 
                         series: [{
