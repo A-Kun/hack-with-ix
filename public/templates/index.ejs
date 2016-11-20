@@ -21,55 +21,62 @@
 
     <body ng-controller="ChartsController">
         <center>
-        <div style="max-width: 1300px;">
-        <center>
-            <div style="margin-top: 10px; margin-bottom: 10px;">
-                <select class="selectpicker" ng-model="dc" ng-change="refreshOnDrop()">
-                    <option value="NA">NA Server</option>
-                    <option value="EU">EU Server</option>
-                    <option value="AS">AS Server</option>
-                </select>
-            </div>
-        </center>
-        <div class="row">
-            <div class="col-md-2">
-                <span class="span3" style="margin-left:10px;">
-                    <div class="thumbnail" data-drop="true" ng-model="list1" data-jqyoui-options="optionsList1" jqyoui-droppable="{multiple:true, onDrop:'refreshOnDrop'}">
-                      <div class="caption">
-                        <div class="btn btn-info btn-draggable" ng-repeat="item in list1" ng-show="item.title" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list1" jqyoui-draggable="{index: {{$index}},animate:true}">{{ item.title }}</div>
-                      </div>
+            <div style="max-width: 1300px;">
+                <center>
+                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                        <select class="selectpicker" ng-model="dc" ng-change="refreshOnDrop()">
+                            <option value="NA">NA Server</option>
+                            <option value="EU">EU Server</option>
+                            <option value="AS">AS Server</option>
+                        </select>
                     </div>
-                </span>
-            </div>
-            <div id="container" class="col-md-8" data-jqyoui-options></div>
-            <div class="col-md-2">
-                <div class="navbar-inner">
-                    <div class="form-inline" style="text-align: center;">
-                        <div class="btn btn-droppable" ng-repeat="item in list5" data-drop="true" ng-model="list5" data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=list5])'}"  jqyoui-droppable="{index: {{$index}}}">
-                            <div class="btn btn-info btn-draggable" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list5" jqyoui-draggable="{index: {{$index}},placeholder:true,animate:true}" ng-hide="!item.title">{{ item.title }}</div>
-                        </div>
+                </center>
+                <div class="row">
+                    <div class="col-md-2">
+                        <span class="span3" style="margin-left:10px;">
+                            <div class="thumbnail" data-drop="true" ng-model="list1" data-jqyoui-options="optionsList1" jqyoui-droppable="{multiple:true, onDrop:'refreshOnDrop'}">
+                              <div class="caption">
+                                <div class="btn btn-info btn-draggable" ng-repeat="item in list1" ng-show="item.title" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list1" jqyoui-draggable="{index: {{$index}},animate:true}">{{ item.title }}</div>
+                              </div>
+                            </div>
+                        </span>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-5"></div>
-        <div class="contentWrapper ng-cloak col-md-2">
-            <div class="content">
-                <div class="row-fluid">
-                    <span class="span3" style="margin-left:10px;">
-                        <div class="thumbnail" data-drop="true" ng-model="list2" data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=list2])'}"  jqyoui-droppable="{multiple:true, onDrop:'refreshOnDrop'}">
-                            <div class="caption">
-                                <div class="btn btn-info btn-draggable" ng-repeat="item in list2" ng-show="item.title" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list2" jqyoui-draggable="{index: {{$index}},animate:true}">{{ item.title }}</div>
+                    <div id="container" class="col-md-8" data-jqyoui-options></div>
+                    <div class="col-md-2">
+                        <div class="navbar-inner">
+                            <div class="form-inline" style="text-align: center;">
+                                <div class="btn btn-droppable" ng-repeat="item in list5" data-drop="true" ng-model="list5" data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=list5])'}"  jqyoui-droppable="{index: {{$index}}}">
+                                    <div class="btn btn-info btn-draggable" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list5" jqyoui-draggable="{index: {{$index}},placeholder:true,animate:true}" ng-hide="!item.title">{{ item.title }}</div>
+                                </div>
                             </div>
                         </div>
-                    </span>
+                    </div>
                 </div>
-              </li>
-              
-            </ul>
-          </div>
-        </div>
-        </div>
+                <div class="col-md-5"></div>
+                <div class="contentWrapper ng-cloak col-md-2">
+                    <div class="content">
+                        <div class="row-fluid">
+                            <span class="span3" style="margin-left:10px;">
+                                <div class="thumbnail" data-drop="true" ng-model="list2" data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=list2])'}"  jqyoui-droppable="{multiple:true, onDrop:'refreshOnDrop'}">
+                                    <div class="caption">
+                                        <div class="btn btn-info btn-draggable" ng-repeat="item in list2" ng-show="item.title" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list2" jqyoui-draggable="{index: {{$index}},animate:true}">{{ item.title }}</div>
+                                    </div>
+                                </div>
+                            </span>
+
+                            </div>
+                        </div>
+                      </li>
+                      
+                    </ul>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-4" style="margin-top: 25px;" ng-hide="!fiveNum">
+                    <span>5-number summary:&nbsp;</span><input ng-model="fiveNum">
+                    <br>
+                    <span>Standard Deviation:&nbsp;</span><input ng-model="sd">
+                </div>
+            </div>
         <center>
     </body>
 

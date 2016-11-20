@@ -107,6 +107,11 @@ angular.module('charts.controllers.chartsController', [])
                                 })
                             }]
                         });
+                        showStats(Object.keys(res).map(function(key) {
+                                    
+                                    return res[key][yaxis].reduce(function(a,b) {
+                                        return Math.round(a + b);
+                                    }, 0)}));
                     });
                 }
             } else if ((xaxis == 'platform' || xaxis == 'format') && yaxis == 'count') {
@@ -140,6 +145,8 @@ angular.module('charts.controllers.chartsController', [])
                             data: yAxis
                         }]
                     });
+                    $scope.fiveNum = '';
+                    $scope.sd = '';
                 });
             } else {
                 ApiRoutingService.get('impressions?dc=' + dc).then(function(res) {
@@ -164,6 +171,8 @@ angular.module('charts.controllers.chartsController', [])
                             data: yAxis
                         }]
                     });
+                    $scope.fiveNum = '';
+                    $scope.sd = '';
                 });
             }
         }
@@ -231,7 +240,9 @@ angular.module('charts.controllers.chartsController', [])
                 upper_boundary: upper_boundary,
                 standard_deviation: standard_deviation
             };
-            return reulst;
+            $scope.fiveNum = result.min.toString() + ', ' + result.q1.toString() + ', ' + result.median.toString() + ', ' + result.q3.toString() + ', ' + result.max.toString();
+            $scope.sd = result.standard_deviation.toString();
+            return result;
         }
 
         // Limit items to be dropped in list1
