@@ -213,4 +213,6 @@ angular.module('charts.controllers.chartsController', [])
                 }
             }
         }
+
+        $scope.dc = 'NA';
     }]);
