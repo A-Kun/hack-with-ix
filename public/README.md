@@ -10,3 +10,4 @@ $ cd ../api
 $ npm i
 $ node server.js
 ```
+Then access `localhost:8000/app` in your browser.
