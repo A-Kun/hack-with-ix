@@ -10,6 +10,7 @@
 
         <!-- style -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/semantic.min.css"></link>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
         <style>
           .thumbnail { height: 280px !important; }
@@ -18,8 +19,8 @@
         </style>
     </head>
 
-    <body ng-controller="ChartsController">
-        <center><h1> WELCOME TO CANADA! </h1></center>
+    <body ng-controller="ChartsController" class="ui inverted segment">
+        <center><h1 style="color:white;"> WELCOME TO CANADA! </h1></center>
         <div class="row">
             <div class="col-md-2">
                 <span class="span3" style='margin-left:10px;'>
@@ -53,12 +54,23 @@
                         </div>
                     </span>
                 </div>
-            </div>
+              </li>
+              
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="navbar-inner">
+        <div class="container form-inline" style="text-align: center;">
+          <div class="btn btn-droppable" ng-repeat="item in list5" data-drop="true" ng-model='list5' data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=list5])'}"  jqyoui-droppable="{index: {{$index}}}">
+            <div class="btn btn-info btn-draggable" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list5" jqyoui-draggable="{index: {{$index}},placeholder:true,animate:true}" ng-hide="!item.title">{{item.title}}</div>
+          </div>
         </div>
 
     </body>
 
     <footer>
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.js"></script>
@@ -71,6 +83,7 @@
         <script src="https://code.highcharts.com/highcharts.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
         <script src="https://rawgit.com/codef0rmer/angular-dragdrop/master/src/angular-dragdrop.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/semantic.min.js"></script>
 
     </footer>
 </html>

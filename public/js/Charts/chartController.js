@@ -27,6 +27,7 @@ angular.module('charts.controllers.chartsController', [])
             var xAxis = [];
             var yAxis = [];
             if (xaxis == 'timestamp') {
+<<<<<<< 5d780dea3fb51baf603be08890161377fdfb7920
                 if (yaxis == 'spendPerImpression') {
                     NAtimestampMapping.then(function(res) {
                         var max = 0;
@@ -62,6 +63,31 @@ angular.module('charts.controllers.chartsController', [])
                                 })
                             }]
                         });
+=======
+                NAtimestampMapping.then(function(res) {
+                    console.log(res);
+                    Highcharts.chart('container', {
+                        chart: {
+                            renderTo: 'container',
+                            type: 'line',
+                            backgroundColor: "#000000",
+                        },
+                        
+                        xAxis: {
+                            categories: Object.keys(res).map(function(key) {
+                                console.log(key);
+                                return new Date(parseInt(key));
+                            })
+                        },
+                        series: [{
+                            data: Object.keys(res).map(function(key) {
+                                
+                                return res[key][yaxis].reduce(function(a,b) {
+                                    return Math.round(a + b);
+                                }, 0);
+                            })
+                        }]
+>>>>>>> fixed changes
                     });
                 } else {
                     NAtimestampMapping.then(function(res) {
@@ -111,10 +137,12 @@ angular.module('charts.controllers.chartsController', [])
                     Highcharts.chart('container', {
                         chart: {
                             renderTo: 'container',
-                            type: 'column'
+                            type: 'column',
+                            backgroundColor: "#000000"//black
                         },
                         xAxis: {
-                            categories: xAxis
+                            categories: xAxis,
+                            backgroundColor: "#FFFFFF" //WHITE
                         },
 
                         series: [{
@@ -132,10 +160,13 @@ angular.module('charts.controllers.chartsController', [])
                     Highcharts.chart('container', {
                         chart: {
                             renderTo: 'container',
-                            type: 'line'
+                            type: 'line',
+                            backgroundColor: "#000000" //black
                         },
                         xAxis: {
-                            categories: xAxis
+                            categories: xAxis,
+                            Color: "#FFFFFF" // white
+
                         },
 
                         series: [{
@@ -145,7 +176,7 @@ angular.module('charts.controllers.chartsController', [])
                 });
             }
         }
-        $scope.refresh('', '');
+        $scope.refresh('timestamp', 'spend');
 
         $scope.list1 = [];
         $scope.list2 = [];
