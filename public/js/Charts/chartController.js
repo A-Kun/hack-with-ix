@@ -81,6 +81,9 @@ angular.module('charts.controllers.chartsController', [])
                         }
                         delete res[max];
                         Highcharts.chart('container', {
+                            title:{
+                                text:''
+                            },
                             chart: {
                                 renderTo: 'container',
                                 type: 'line'
@@ -197,7 +200,6 @@ angular.module('charts.controllers.chartsController', [])
         };
 
         $scope.refreshOnDrop = function() {
-            console.log(1);
             if (isValidOperator($scope.list1) && isValidOperator($scope.list2)) {
                 if ($scope.list1.length > 1 && $scope.list1[0].title == 'spend' && $scope.list1[1].title == '/' && $scope.list1[2].title == 'impressions') {
                     $scope.refresh($scope.list2[0].title, 'spendPerImpression', $scope.dc);

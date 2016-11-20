@@ -21,11 +21,13 @@
 
     <body ng-controller="ChartsController">
         <center>
-            <select ng-model="dc" ng-change="refreshOnDrop()">
-                <option value="NA">NA Server</option>
-                <option value="EU">EU Server</option>
-                <option value="AS">AS Server</option>
-            </select>
+            <div style="margin-top: 10px; margin-bottom: 10px;">
+                <select class="selectpicker" ng-model="dc" ng-change="refreshOnDrop()">
+                    <option value="NA">NA Server</option>
+                    <option value="EU">EU Server</option>
+                    <option value="AS">AS Server</option>
+                </select>
+            </div>
         </center>
         <div class="row">
             <div class="col-md-2">
@@ -82,5 +84,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
         <script src="https://rawgit.com/codef0rmer/angular-dragdrop/master/src/angular-dragdrop.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/semantic.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.0/css/bootstrap-select.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.0/js/bootstrap-select.min.js"></script>
     </footer>
 </html>
